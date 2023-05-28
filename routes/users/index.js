@@ -16,6 +16,6 @@ userRouter.get('/get-users', [verifyToken], UserController.getUsers)
 userRouter.get('/my-profile', [verifyToken], UserController.myProfile)
 userRouter.post('/edit-profile', [validationMiddleware(UserValidator.editProfile()), verifyToken], UserController.editProfile)
 userRouter.post('/edit-trainee', [verifyToken], UserController.editTrainee)
-userRouter.delete('/delete', [validationMiddleware(UserController.editTrainee), verifyToken], UserController.deleteUser)
+userRouter.delete('/delete', [verifyToken], UserController.deleteUser)
 
 module.exports = { userRouter }
