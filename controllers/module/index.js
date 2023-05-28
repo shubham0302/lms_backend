@@ -18,7 +18,8 @@ class ModuleController {
                     thumbnail,
                     createdDate: new Date().toISOString(),
                     creator: decodedId,
-                    department: departmentId
+                    department: departmentId,
+                    totalSubModules: subModule.length
                 })
 
                 const subModuleResult = await SubModule.insertMany(subModule.map(e => ({

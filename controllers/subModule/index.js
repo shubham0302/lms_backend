@@ -24,6 +24,12 @@ class SubModuleController {
                         createdDate: new Date().toISOString(),
                     })))
 
+                    await module.updateOne({
+                        $set: {
+                            totalSubModules: module.totalSubModules + subModule.length
+                        }
+                    })
+
                     // const data = await SubModule.create({
                     //     subModuleName,
                     //     subModuleDescription,
@@ -118,6 +124,7 @@ class SubModuleController {
         try {
             const { subModuleId } = req.query
             const data = await SubModule.findById(subModuleId).populate('module')
+
             return response.ok(data)
         } catch (error) {
 

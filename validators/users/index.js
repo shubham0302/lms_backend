@@ -10,6 +10,8 @@ class UserValidator {
             phoneNumber: Joi.string().required(),
             role: Joi.string().required(),
             department: Joi.array(),
+            address: Joi.string(),
+            profile: Joi.object()
         })
     }
 
@@ -54,6 +56,21 @@ class UserValidator {
             phoneNumber: Joi.string(),
             address: Joi.string(),
             profile: Joi.string(),
+            email: Joi.string()
+        })
+    }
+
+    static editTrainee() {
+        return Joi.object({
+            userId: Joi.string().required(),
+            firstName: Joi.string(),
+            lastName: Joi.string(),
+            email: Joi.string(),
+            phoneNumber: Joi.string(),
+            password: Joi.string(),
+            department: Joi.string(),
+            address: Joi.string(),
+            profile: Joi.object()
         })
     }
 }

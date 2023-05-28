@@ -8,7 +8,7 @@ class UserController {
         const response = new ResponseWraper(res)
 
         try {
-            const { firstName, lastName, email, password, phoneNumber, role, department, decodedRole, decodedId } = req.body
+            const { firstName, lastName, email, password, phoneNumber, role, department, decodedRole, decodedId, address, profile } = req.body
 
             const isEmailExists = await User.find({ email })
 
@@ -36,7 +36,7 @@ class UserController {
                 firstName,
                 lastName,
                 email,
-                password,
+                password, address, profile,
                 phoneNumber,
                 role,
                 department,
@@ -238,6 +238,31 @@ class UserController {
         }
     }
 
+    static async deleteUser(req, res) {
+        const response = new ResponseWraper(res)
+
+        try {
+            const { decodedRole } = req.body
+            const { userId } = req.query
+
+            if (decodedRole === "company") {
+
+                const data = await User.findByIdAndDelete(userId)
+
+                return response.ok("User deleted successfully.")
+            } else {
+                return response.badRequest("Only company can delete the user.")
+            }
+
+
+
+        } catch (error) {
+            console.log(error, "delete user error");
+
+            response.internalServerError()
+        }
+    }
+
     static async myProfile(req, res) {
         const response = new ResponseWraper(res)
 
@@ -259,19 +284,42 @@ class UserController {
         const response = new ResponseWraper(res)
 
         try {
-            const { decodedId, firstName, lastName, phoneNumber, address, profile } = req.body
+            const { decodedId, firstName, lastName, email, phoneNumber, address, profile } = req.body
 
             const data = await User.findByIdAndUpdate(decodedId, {
                 firstName,
                 lastName,
                 address,
                 phoneNumber,
-                profile
+                profile,
+                email,
+                password
             })
 
             return response.ok(data)
         } catch (error) {
             console.log(error, "edit profile error");
+            return response.internalServerError()
+        }
+    }
+
+    static async editTrainee(req, res) {
+        const response = new ResponseWraper(res)
+
+        try {
+            const { decodedRole, userId, firstName, lastName, email, phoneNumber, password, department, address, profile } = req.body
+
+            if (decodedRole === "company") {
+                const data = await User.findByIdAndUpdate(userId, {
+                    firstName, lastName, email, phoneNumber, password, department, address, profile
+                })
+
+                return response.ok(data)
+            } else {
+                return response.badRequest("Only company can edit the trainee")
+            }
+        } catch (error) {
+            console.log(error, "edit trainee error");
             return response.internalServerError()
         }
     }

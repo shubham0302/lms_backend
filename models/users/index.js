@@ -28,7 +28,7 @@ const UserSchema = new Schema({
         default: ''
     },
     profile: {
-        type: String
+        type: Object
     },
     creator: {
         type: Schema.Types.ObjectId,
