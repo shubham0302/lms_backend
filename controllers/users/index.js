@@ -293,7 +293,6 @@ class UserController {
                 phoneNumber,
                 profile,
                 email,
-                password
             })
 
             return response.ok(data)
@@ -307,10 +306,10 @@ class UserController {
         const response = new ResponseWraper(res)
 
         try {
-            const { decodedRole, userId, firstName, lastName, email, phoneNumber, password, department, address, profile } = req.body
+            const { decodedRole, _id, firstName, lastName, email, phoneNumber, password, department, address, profile } = req.body
 
             if (decodedRole === "company") {
-                const data = await User.findByIdAndUpdate(userId, {
+                const data = await User.findByIdAndUpdate(_id, {
                     firstName, lastName, email, phoneNumber, password, department, address, profile
                 })
 

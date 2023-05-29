@@ -23,7 +23,25 @@ const verifyToken = (req, res, next) => {
     });
 };
 
+function verifyRole({role = '', isAdmin = false, isCompany = false}){
+    return (req, res, next)=>{
+        const response = new ResponseWraper(res);
+        const {decodedRole} = req.body;
+        if(isAdmin && decodedRole.toLowerString() !== 'admin'){
+            return response.forbidden('Only admin can access this');
+        }
+        if(isCompany && (decodedRole.toLowerString() !== 'company' || decodedRole.toLowerString() !== 'admin')){
+            return response.forbidden('Only company can access this');
+        }
+        if(decodedRole !== role){
+            return response.forbidden(`Only ${role} can access this`);
+            // return next();
+        }
+        return next();
+    }
+}
 
 module.exports = {
-    verifyToken
+    verifyToken,
+    verifyRole
 }
