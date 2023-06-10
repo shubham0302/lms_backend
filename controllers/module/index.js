@@ -1,5 +1,6 @@
 const ResponseWraper = require("../../helpers/response.helper");
 const { Modules } = require("../../models/module");
+const { Progress } = require("../../models/progress");
 const { SubModule } = require("../../models/subModule");
 
 class ModuleController {
@@ -86,15 +87,79 @@ class ModuleController {
         const response = new ResponseWraper(res)
 
         try {
-            const { decodedId } = req.body
+            const { decodedId,decodedRole,decodedDepartment } = req.body
 
-            const module = await Modules.find({ creator: decodedId }).populate('department')
-
-            return response.ok(module)
+            if(decodedRole === 'trainee'){
+                const module = await Modules.find({ department: decodedDepartment }).populate('department')
+                return response.ok(module)
+            }else{
+                const module = await Modules.find({ creator: decodedId }).populate('department')
+                return response.ok(module)
+            }
         } catch (error) {
             console.log(error, "get modules error");
 
             return response.internalServerError
+        }
+    }
+
+    static createProgressOfTrainee = async(req,res)=>{
+        const response = new ResponseWraper(res);
+        try {
+            const {moduleId} = req.query;
+            const { decodedCreator, decodedId } = req.body;
+
+            const submodules = await SubModule.find({module:moduleId}).sort(
+                "sort"
+            );
+
+            if(submodules.length>0){
+
+                const progressAlready = await Progress.findOne({
+                    module:moduleId,
+                    trainee: decodedId
+                });
+
+                console.log(progressAlready);
+
+                if(progressAlready){
+                    return response.ok(progressAlready);
+                }
+
+               console.log( decodedId,'vraj');
+                
+               const progress = await Progress.create({
+                    module: moduleId,
+                    company: decodedCreator,
+                    submodule: submodules[0].sort,
+                    total: submodules.length,
+                    trainee: decodedId
+                });
+                return response.ok(progress);
+            }else{
+                return response.badRequest('No submodules');
+            }
+
+        } catch (error) {
+            console.log(error);
+            return response.internalServerError();
+        }
+    }
+
+    static setProgessOfTrainee = async(req,res) => {
+        const response = new ResponseWraper(res);
+        try {
+            const {progressId,submoduleId} = req.query; 
+            // const {decodedId} = req.body;
+                const submodule = await SubModule.findById(submoduleId);
+                const progress = await Progress.findByIdAndUpdate(progressId,
+                    {$set:{
+                            submodule: submodule.sort
+                        }});
+            return response.ok(progress);
+        } catch (error) {
+            console.log(error);
+            return response.internalServerError();
         }
     }
 }

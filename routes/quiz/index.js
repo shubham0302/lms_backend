@@ -22,6 +22,13 @@ quizRouter.post(
   ],
   QuizController.createQuiz
 );
+quizRouter.get(
+  "/",
+  [
+    verifyToken,
+  ],
+  QuizController.getQuiz
+);
 quizRouter.post(
   "/appear",
   [
@@ -36,7 +43,7 @@ quizRouter.post(
 quizRouter.post(
   "/evaluate",
   [
-    validationMiddleware(QuizValidator.appearForQuiz()),
+    validationMiddleware(QuizValidator.evaluateQuiz()),
     verifyToken,
     verifyRole({
       // role: 'trainee',

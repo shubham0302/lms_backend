@@ -57,6 +57,10 @@ const QuizFormSchema = new Schema({
         type:Number,
         default:0,
     },
+    total: {
+        type:Number,
+        default:0,
+    },
     cutoffispercent: {
         type:Boolean,
         default:false,
@@ -108,12 +112,47 @@ const QuizAttemptSchema = new Schema({
     
 })
 
+const QuizAttemtEvaluateSchema = new Schema({
+
+    form: {
+        type: Schema.Types.ObjectId,
+        ref: 'QuizForm',
+        required: true
+      },
+      obtain: {
+          type:Number,
+          default:0,
+      },
+      total: {
+          type:Number,
+          default:0,
+      },
+      pass: {
+          type:Boolean,
+          default:false,
+      },
+      trainee: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+      },
+      company: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+      },
+});
+
+
+
 const Quiz = model('Quiz',QuizSchema);
 const QuizForm = model('QuizForm',QuizFormSchema);
 const QuizAttempt = model('QuizAttempt',QuizAttemptSchema);
+const QuizAttemptEvaluate = model('QuizAttemtEvaluate',QuizAttemtEvaluateSchema);
 
 module.exports = {
     Quiz,
     QuizForm,
-    QuizAttempt
+    QuizAttempt,
+    QuizAttemptEvaluate,
 }

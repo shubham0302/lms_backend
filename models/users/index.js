@@ -81,7 +81,9 @@ UserSchema.methods = {
             email: this.email,
             role: this.role,
             userId: this._id,
-            phoneNumber: this.phoneNumber
+            phoneNumber: this.phoneNumber,
+            department: this.department,
+            creator:this.creator
         }, JWT_SECRET, {
             expiresIn: 24 * 60 * 60
         })
