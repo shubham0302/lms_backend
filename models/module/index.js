@@ -13,6 +13,7 @@ const ModuleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Department'
     },
+    totalSubModules: { type: Number, default: 0 },
     createdDate: Schema.Types.Date
 })
 

@@ -8,6 +8,9 @@ const compression = require('compression')
 const { departmentRouter } = require('./routes/department')
 const { moduleRouter } = require('./routes/module')
 const { subModuleRouter } = require('./routes/subModule')
+const { uploadRouter } = require('./routes/upload')
+const { quizRouter } = require('./routes/quiz')
+const { reportRouter } = require('./routes/reports')
 
 const app = express()
 
@@ -26,6 +29,9 @@ const routes = () => {
     app.use('/api/department', departmentRouter)
     app.use('/api/module', moduleRouter)
     app.use('/api/sub-module', subModuleRouter)
+    app.use('/api/upload', uploadRouter)
+    app.use('/api/quiz', quizRouter)
+    app.use('/api/reports', reportRouter)
 }
 
 const runAppServer = () => {
@@ -37,7 +43,6 @@ const runAppServer = () => {
 }
 
 config()
-
 routes()
 
 module.exports = { runAppServer }

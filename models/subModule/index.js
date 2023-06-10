@@ -6,6 +6,7 @@ const SubModuleSchema = new Schema({
     videoUrl: String,
     duration: String,
     thumbnailUrl: String,
+    sort: Number,
     module: {
         type: Schema.Types.ObjectId,
         ref: 'Module'
@@ -16,3 +17,5 @@ const SubModuleSchema = new Schema({
 
 const SubModule = model('SubModule', SubModuleSchema)
 module.exports = { SubModule }
+
+

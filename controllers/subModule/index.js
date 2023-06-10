@@ -24,6 +24,12 @@ class SubModuleController {
                         createdDate: new Date().toISOString(),
                     })))
 
+                    await module.updateOne({
+                        $set: {
+                            totalSubModules: module.totalSubModules + subModule.length
+                        }
+                    })
+
                     // const data = await SubModule.create({
                     //     subModuleName,
                     //     subModuleDescription,

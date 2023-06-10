@@ -5,6 +5,12 @@ const DepartmentSchema = new Schema({
         type: String,
         unique: true,
     },
+    company: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    totalModules: Number,
+    totalTrainees: Number
     // staff: [{
     //     type: Schema.Types.ObjectId,
     //     ref: 'User'

@@ -7,6 +7,7 @@ const { UserValidator } = require("../../validators/users");
 const userRouter = Router()
 
 userRouter.post('/register', [validationMiddleware(UserValidator.register()), verifyToken], UserController.register)
+userRouter.post('/create-company', [validationMiddleware.apply(UserValidator.createCompany())], UserController.createCompany)
 userRouter.post('/login', [validationMiddleware(UserValidator.login())], UserController.login)
 userRouter.post('/change-password', [validationMiddleware(UserValidator.changePassword()), verifyToken], UserController.changePassword)
 userRouter.post('/forgot-password', [validationMiddleware(UserValidator.forgotPassword())], UserController.forgotPassword)
@@ -15,5 +16,7 @@ userRouter.post('/set-password', [validationMiddleware(UserValidator.setNewPassw
 userRouter.get('/get-users', [verifyToken], UserController.getUsers)
 userRouter.get('/my-profile', [verifyToken], UserController.myProfile)
 userRouter.post('/edit-profile', [validationMiddleware(UserValidator.editProfile()), verifyToken], UserController.editProfile)
+userRouter.post('/edit-trainee', [verifyToken], UserController.editTrainee)
+userRouter.delete('/delete', [verifyToken], UserController.deleteUser)
 
 module.exports = { userRouter }

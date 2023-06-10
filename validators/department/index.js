@@ -7,6 +7,13 @@ class departmentValidator {
             // staff: Joi.array().required(),
         })
     }
+    static editDepartment() {
+        return Joi.object({
+            name: Joi.string(),
+            departmentId: Joi.string(),
+            // staff: Joi.array().required(),
+        })
+    }
 
 }
 
