@@ -14,6 +14,19 @@ class UserValidator {
             profile: Joi.object()
         })
     }
+    static createCompany() {
+        return Joi.object({
+            firstName: Joi.string().required(),
+            lastName: Joi.string().required(),
+            email: Joi.string().required().email(),
+            password: Joi.string().required(),
+            phoneNumber: Joi.string().required(),
+            role: Joi.string(),
+            department: Joi.array(),
+            address: Joi.string(),
+            profile: Joi.object()
+        })
+    }
 
     static login() {
         return Joi.object({

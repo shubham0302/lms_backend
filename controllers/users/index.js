@@ -52,6 +52,41 @@ class UserController {
         }
     }
 
+    static async createCompany(req, res) {
+        const response = new ResponseWraper(res)
+
+        try {
+            const { firstName, lastName, email, password, phoneNumber } = req.body
+
+            const iEmailExist = await User.find({ email })
+
+            if (iEmailExist.length > 0) {
+                return response.badRequest("Email already registered")
+            }
+
+            const isPhoneNumberExists = await User.find({ phoneNumber })
+
+            if (isPhoneNumberExists.length > 0) {
+                return response.badRequest("Phone number already exists")
+            }
+
+            const user = await User.create({
+                firstName,
+                lastName,
+                email,
+                password,
+                phoneNumber,
+                role: "company"
+            })
+
+            return response.created({ accessToken: user.generateToken(), user })
+
+        } catch (error) {
+            console.log(error, "create company error");
+            return response.internalServerError()
+        }
+    }
+
     static async login(req, res) {
         const response = new ResponseWraper(res)
 

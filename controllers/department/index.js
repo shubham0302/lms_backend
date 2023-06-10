@@ -6,13 +6,14 @@ class DepartmentController {
         const response = new ResponseWraper(res)
 
         try {
-            const { decodedRole, name, staff } = req.body
+            const { decodedRole, decodedId, name, staff } = req.body
 
-            if (decodedRole === "admin") {
+            if (decodedRole === "company") {
 
                 if (name) {
                     const data = await Department.create({
-                        name
+                        name,
+                        company: decodedId
                     })
 
                     return response.ok(data)
@@ -20,7 +21,7 @@ class DepartmentController {
                     return response.badRequest("Department already exist with this name.")
                 }
             } else {
-                return response.badRequest("Only admin can create new department")
+                return response.badRequest("Only company can create new department")
             }
         } catch (error) {
             console.log(error, "create department error");
@@ -30,9 +31,10 @@ class DepartmentController {
 
     static async getDepartmentList(req, res) {
         const response = new ResponseWraper(res)
-
         try {
-            const data = await Department.find()
+            const { decodedId } = req.body
+
+            const data = await Department.find({ company: decodedId })
             return response.ok(data)
         } catch (error) {
             console.log(error, "get department list error");
