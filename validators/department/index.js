@@ -10,6 +10,7 @@ class departmentValidator {
     static editDepartment() {
         return Joi.object({
             name: Joi.string(),
+            departmentId: Joi.string(),
             // staff: Joi.array().required(),
         })
     }

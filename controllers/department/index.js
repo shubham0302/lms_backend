@@ -13,7 +13,9 @@ class DepartmentController {
                 if (name) {
                     const data = await Department.create({
                         name,
-                        company: decodedId
+                        company: decodedId,
+                        totalModules: 0,
+                        totalTrainees: 0
                     })
 
                     return response.ok(data)

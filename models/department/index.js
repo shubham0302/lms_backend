@@ -8,7 +8,9 @@ const DepartmentSchema = new Schema({
     company: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
+    totalModules: Number,
+    totalTrainees: Number
     // staff: [{
     //     type: Schema.Types.ObjectId,
     //     ref: 'User'
