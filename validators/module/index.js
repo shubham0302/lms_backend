@@ -10,10 +10,11 @@ class moduleValidator {
             tags: Joi.array().required(),
             subModule: Joi.array().items(Joi.object({
                 subModuleName: Joi.string().required(),
-                subModuleDescription: Joi.string().required(),
+                subModuleDescription: Joi.string().required().allow(''),
                 thumbnailUrl: Joi.string().required(),
                 videoUrl: Joi.string().required(),
-                duration: Joi.string().required()
+                duration: Joi.string().required(),
+                sort: Joi.number().required()
             })).min(1)
         })
     }

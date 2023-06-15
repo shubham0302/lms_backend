@@ -39,13 +39,14 @@ class QuizValidator {
                 answerType:  Joi.string().required().valid('sa','la','mcma','mcsa'),
                 evaluate: Joi.number().required(),
                 question: Joi.string().hex().length(24).required(),
-            }))
+            })),
+            company: Joi.string().required().allow(''),
         });
     }   
     static evaluateQuiz(){
         return Joi.object({
             answers: Joi.array().items(Joi.object({
-                remark: Joi.string().allow('').required(),
+                remarks: Joi.string().allow('').required(),
                 evaluate: Joi.number().required(),
                 answer: Joi.string().hex().length(24).required(),
             }))
