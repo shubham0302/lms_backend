@@ -328,6 +328,8 @@ class UserController {
                 phoneNumber,
                 profile,
                 email,
+            }, {
+                new: true
             })
 
             return response.ok(data)
