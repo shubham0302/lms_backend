@@ -67,7 +67,7 @@ class UserValidator {
             firstName: Joi.string(),
             lastName: Joi.string(),
             phoneNumber: Joi.string(),
-            address: Joi.string(),
+            address: Joi.string().allow(""),
             profile: Joi.object(),
             email: Joi.string()
         })
