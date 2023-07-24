@@ -12,7 +12,7 @@ const SubModuleSchema = new Schema({
         ref: 'Module'
     },
     createdDate: Schema.Types.Date,
-
+    deleted: { type: Boolean, default: false }
 })
 
 const SubModule = model('SubModule', SubModuleSchema)

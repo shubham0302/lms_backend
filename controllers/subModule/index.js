@@ -82,9 +82,29 @@ class SubModuleController {
             const { decodedRole, subModuleId } = req.body
 
             if (decodedRole === "company") {
-                const data = await SubModule.findByIdAndDelete(subModuleId)
+                // const data = await SubModule.findByIdAndDelete(subModuleId)
 
-                return response.ok({ message: "Sub module deleted successfully" })
+                const data = await SubModule.findByIdAndUpdate(subModuleId, {
+                    deleted: true
+                })
+
+                console.log(data, "subbbb module");
+
+                const module = await Modules.findById(data.module)
+
+
+                if (data.deleted) {
+                    return response.badRequest("This sub module is already deleted")
+                } else {
+
+                    module.updateOne({
+                        $set: {
+                            totalSubModules: module.totalSubModules - 1
+                        }
+                    })
+                    return response.ok({ message: "Sub module deleted successfully" })
+                }
+
             } else {
                 return response.badRequest("Only company can delete sub module")
             }
@@ -103,7 +123,7 @@ class SubModuleController {
 
             if (module) {
 
-                const subModule = await SubModule.find({ module: moduleId })
+                const subModule = await SubModule.find({ $and: [{ module: moduleId }, { deleted: { $ne: true } }] })
 
                 return response.ok({ module, subModule })
 

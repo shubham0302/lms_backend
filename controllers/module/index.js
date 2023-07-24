@@ -69,11 +69,22 @@ class ModuleController {
             const { decodedRole, moduleId } = req.body
 
             if (decodedRole === "company") {
-                const data = await Modules.findByIdAndDelete(moduleId)
 
-                const subModuleData = await SubModule.deleteMany({ module: moduleId })
+                const data = await Modules.findByIdAndUpdate(moduleId, {
+                    deleted: true
+                })
 
-                return response.ok({ message: "Module deleted successfully" })
+                if (data.deleted) {
+                    return response.badRequest("This module is already deleted")
+                } else {
+
+                    return response.ok({ message: "Module deleted successfully" })
+                }
+
+                // const data = await Modules.findByIdAndDelete(moduleId)
+
+                // const subModuleData = await SubModule.deleteMany({ module: moduleId })
+
             } else {
                 return response.badRequest("Only company can delete the module")
             }
@@ -87,13 +98,13 @@ class ModuleController {
         const response = new ResponseWraper(res)
 
         try {
-            const { decodedId,decodedRole,decodedDepartment } = req.body
+            const { decodedId, decodedRole, decodedDepartment } = req.body
 
-            if(decodedRole === 'trainee'){
-                const module = await Modules.find({ department: decodedDepartment }).populate('department')
+            if (decodedRole === 'trainee') {
+                const module = await Modules.find({ $and: [{ department: decodedDepartment }, { deleted: { $ne: true } }] }).populate('department')
                 return response.ok(module)
-            }else{
-                const module = await Modules.find({ creator: decodedId }).populate('department')
+            } else {
+                const module = await Modules.find({ $and: [{ creator: decodedId }, { deleted: { $ne: true } }] }).populate('department')
                 return response.ok(module)
             }
         } catch (error) {
@@ -103,32 +114,32 @@ class ModuleController {
         }
     }
 
-    static createProgressOfTrainee = async(req,res)=>{
+    static createProgressOfTrainee = async (req, res) => {
         const response = new ResponseWraper(res);
         try {
-            const {moduleId} = req.query;
+            const { moduleId } = req.query;
             const { decodedCreator, decodedId } = req.body;
 
-            const submodules = await SubModule.find({module:moduleId}).sort(
+            const submodules = await SubModule.find({ module: moduleId }).sort(
                 "sort"
             );
 
-            if(submodules.length>0){
+            if (submodules.length > 0) {
 
                 const progressAlready = await Progress.findOne({
-                    module:moduleId,
+                    module: moduleId,
                     trainee: decodedId
                 });
 
                 console.log(progressAlready);
 
-                if(progressAlready){
+                if (progressAlready) {
                     return response.ok(progressAlready);
                 }
 
-               console.log( decodedId,'vraj');
-                
-               const progress = await Progress.create({
+                console.log(decodedId, 'vraj');
+
+                const progress = await Progress.create({
                     module: moduleId,
                     company: decodedCreator,
                     submodule: submodules[0].sort,
@@ -136,7 +147,7 @@ class ModuleController {
                     trainee: decodedId
                 });
                 return response.ok(progress);
-            }else{
+            } else {
                 return response.badRequest('No submodules');
             }
 
@@ -146,16 +157,18 @@ class ModuleController {
         }
     }
 
-    static setProgessOfTrainee = async(req,res) => {
+    static setProgessOfTrainee = async (req, res) => {
         const response = new ResponseWraper(res);
         try {
-            const {progressId,submoduleId} = req.query; 
+            const { progressId, submoduleId } = req.query;
             // const {decodedId} = req.body;
-                const submodule = await SubModule.findById(submoduleId);
-                const progress = await Progress.findByIdAndUpdate(progressId,
-                    {$set:{
-                            submodule: submodule.sort
-                        }});
+            const submodule = await SubModule.findById(submoduleId);
+            const progress = await Progress.findByIdAndUpdate(progressId,
+                {
+                    $set: {
+                        submodule: submodule.sort
+                    }
+                });
             return response.ok(progress);
         } catch (error) {
             console.log(error);

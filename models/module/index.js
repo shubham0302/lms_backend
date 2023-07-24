@@ -14,7 +14,8 @@ const ModuleSchema = new Schema({
         ref: 'Department'
     },
     totalSubModules: { type: Number, default: 0 },
-    createdDate: Schema.Types.Date
+    createdDate: Schema.Types.Date,
+    deleted: { type: Boolean, default: false }
 })
 
 const Modules = model('Module', ModuleSchema)

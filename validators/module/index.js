@@ -7,7 +7,7 @@ class moduleValidator {
             description: Joi.string().required(),
             departmentId: Joi.string().required(),
             thumbnail: Joi.string().required(),
-            tags: Joi.array().required(),
+            tags: Joi.array(),
             subModule: Joi.array().items(Joi.object({
                 subModuleName: Joi.string().required(),
                 subModuleDescription: Joi.string().required().allow(''),

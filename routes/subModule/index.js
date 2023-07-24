@@ -8,7 +8,7 @@ const subModuleRouter = Router()
 
 subModuleRouter.post('/create', [validationMiddleware(subModuleValidator.createSubModule()), verifyToken], SubModuleController.createSubModule)
 subModuleRouter.post('/edit', [validationMiddleware(subModuleValidator.editSubModule()), verifyToken], SubModuleController.editSubModule)
-subModuleRouter.delete('/delete', [validationMiddleware(subModuleValidator.deleteSubModule()), verifyToken], SubModuleController.deleteSubModule)
+subModuleRouter.post('/delete', [validationMiddleware(subModuleValidator.deleteSubModule()), verifyToken], SubModuleController.deleteSubModule)
 subModuleRouter.get('/', [verifyToken], SubModuleController.getSubModules)
 subModuleRouter.get('/details', [verifyToken], SubModuleController.getSingleSubModule)
 

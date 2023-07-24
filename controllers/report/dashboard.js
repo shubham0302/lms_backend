@@ -17,7 +17,9 @@ class DashboardController {
         company: decodedId,
       });
       const modules = await Modules.find({
-        creator: decodedId,
+        $and: [{
+          creator: decodedId,
+        }, { deleted: { $ne: true } }]
       });
       const traineeCount = await User.count({
         role: "trainee",
@@ -123,7 +125,9 @@ class DashboardController {
       console.log(decodedDepartment);
 
       const modules = await Modules.find({
-        department: decodedDepartment,
+        $and: [{
+          department: decodedDepartment,
+        }, { deleted: { $ne: true } }]
       }).sort({
         createdAt: -1,
       });
